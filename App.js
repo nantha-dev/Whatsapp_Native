@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, StatusBar } from 'react-native';
+import { StyleSheet, View, StatusBar, SafeAreaView } from 'react-native';
 import Header from './src/components/Header';
 import ChatList from './src/components/ChatList';
 import StatusList from './src/components/StatusList';
 import CallsList from './src/components/CallsList';
 import ChatBox from './src/components/ChatBox';
+import BottomNav from './src/components/BottomNav';
+import { Colors } from './src/constants/Colors';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('CHATS');
@@ -35,24 +37,30 @@ export default function App() {
   if (selectedChat) {
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor="#075E54" />
+        <StatusBar barStyle="light-content" backgroundColor="#121B22" />
         <ChatBox chat={selectedChat} onBack={handleBack} />
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#075E54" />
-      <Header currentTab={activeTab} onTabPress={setActiveTab} />
-      {renderContent()}
-    </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+      <Header />
+      <View style={styles.content}>
+        {renderContent()}
+      </View>
+      <BottomNav activeTab={activeTab} onTabPress={setActiveTab} />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.background,
   },
+  content: {
+    flex: 1,
+  }
 });

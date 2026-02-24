@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Colors } from '../constants/Colors';
 
 const CALLS_DATA = [
     {
@@ -41,7 +42,7 @@ const CallItem = ({ item }) => (
                 <MaterialIcons
                     name={item.incoming ? 'call-received' : 'call-made'}
                     size={16}
-                    color={item.missed ? '#FF0000' : '#25D366'}
+                    color={item.missed ? '#F0505C' : Colors.unreadBadge}
                     style={styles.callIcon}
                 />
                 <Text style={styles.time}>{item.time}</Text>
@@ -50,7 +51,7 @@ const CallItem = ({ item }) => (
         <MaterialIcons
             name={item.video ? 'videocam' : 'call'}
             size={24}
-            color="#075E54"
+            color={Colors.unreadBadge}
         />
     </TouchableOpacity>
 );
@@ -60,7 +61,7 @@ const CallsList = () => {
         <View style={styles.container}>
             <TouchableOpacity style={styles.linkContainer}>
                 <View style={styles.iconCircle}>
-                    <MaterialIcons name="link" size={24} color="#fff" />
+                    <MaterialIcons name="link" size={24} color={Colors.background} />
                 </View>
                 <View style={styles.textContainer}>
                     <Text style={styles.name}>Create call link</Text>
@@ -74,10 +75,11 @@ const CallsList = () => {
                 data={CALLS_DATA}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => <CallItem item={item} />}
+                contentContainerStyle={{ paddingBottom: 100 }}
             />
 
             <TouchableOpacity style={styles.fab}>
-                <MaterialIcons name="add-call" size={24} color="#fff" />
+                <MaterialIcons name="add-call" size={24} color={Colors.background} />
             </TouchableOpacity>
         </View>
     );
@@ -86,18 +88,18 @@ const CallsList = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.background,
     },
     linkContainer: {
         flexDirection: 'row',
-        padding: 15,
+        padding: 16,
         alignItems: 'center',
     },
     iconCircle: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        backgroundColor: '#25D366',
+        width: 52,
+        height: 52,
+        borderRadius: 26,
+        backgroundColor: Colors.unreadBadge,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 15,
@@ -106,8 +108,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     name: {
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: 'bold',
+        color: Colors.textPrimary,
     },
     callDetails: {
         flexDirection: 'row',
@@ -119,35 +122,35 @@ const styles = StyleSheet.create({
     },
     time: {
         fontSize: 14,
-        color: '#666',
+        color: Colors.textSecondary,
     },
     sectionHeader: {
-        backgroundColor: '#f4f4f4',
-        paddingVertical: 8,
-        paddingHorizontal: 15,
-        color: '#666',
-        fontWeight: 'bold',
-        fontSize: 14,
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        color: Colors.textSecondary,
+        fontWeight: '600',
+        fontSize: 13,
+        textTransform: 'uppercase',
     },
     itemContainer: {
         flexDirection: 'row',
-        padding: 15,
+        padding: 16,
         alignItems: 'center',
     },
     avatar: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
+        width: 52,
+        height: 52,
+        borderRadius: 26,
         marginRight: 15,
     },
     fab: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 24,
         right: 20,
-        backgroundColor: '#25D366',
-        width: 60,
-        height: 60,
-        borderRadius: 30,
+        backgroundColor: Colors.unreadBadge,
+        width: 56,
+        height: 56,
+        borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
         elevation: 5,

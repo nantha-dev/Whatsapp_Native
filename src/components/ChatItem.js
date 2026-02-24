@@ -1,14 +1,18 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Colors } from '../constants/Colors';
 
 const ChatItem = ({ chat, onChatPress }) => {
     return (
         <TouchableOpacity style={styles.container} onPress={() => onChatPress(chat)}>
-            <Image source={{ uri: chat.avatar }} style={styles.avatar} />
+            <View style={styles.avatarContainer}>
+                <Image source={{ uri: chat.avatar }} style={styles.avatar} />
+                {chat.id === '1' && <View style={styles.statusRing} />}
+            </View>
             <View style={styles.content}>
                 <View style={styles.header}>
                     <Text style={styles.name}>{chat.name}</Text>
-                    <Text style={styles.time}>{chat.time}</Text>
+                    <Text style={[styles.time, chat.unreadCount > 0 && styles.activeTime]}>{chat.time}</Text>
                 </View>
                 <View style={styles.footer}>
                     <Text style={styles.lastMessage} numberOfLines={1}>
@@ -28,35 +32,52 @@ const ChatItem = ({ chat, onChatPress }) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        padding: 15,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: Colors.background,
+    },
+    avatarContainer: {
+        position: 'relative',
+        marginRight: 16,
     },
     avatar: {
-        width: 60,
-        height: 60,
+        width: 52,
+        height: 52,
+        borderRadius: 26,
+    },
+    statusRing: {
+        position: 'absolute',
+        top: -2,
+        left: -2,
+        right: -2,
+        bottom: -2,
         borderRadius: 30,
-        marginRight: 15,
+        borderWidth: 2,
+        borderColor: Colors.unreadBadge,
     },
     content: {
         flex: 1,
-        borderBottomWidth: 0.5,
-        borderBottomColor: '#eee',
-        paddingBottom: 15,
+        justifyContent: 'center',
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 5,
+        alignItems: 'center',
+        marginBottom: 4,
     },
     name: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#000',
+        fontSize: 17,
+        fontWeight: '600',
+        color: Colors.textPrimary,
     },
     time: {
-        fontSize: 14,
-        color: '#666',
+        fontSize: 12,
+        color: Colors.textSecondary,
+    },
+    activeTime: {
+        color: Colors.unreadBadge,
+        fontWeight: 'bold',
     },
     footer: {
         flexDirection: 'row',
@@ -64,21 +85,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     lastMessage: {
-        fontSize: 15,
-        color: '#666',
+        fontSize: 14,
+        color: Colors.textSecondary,
         flex: 1,
         marginRight: 10,
     },
     unreadBadge: {
-        backgroundColor: '#25D366',
-        borderRadius: 10,
-        width: 20,
-        height: 20,
+        backgroundColor: Colors.unreadBadge,
+        borderRadius: 12,
+        minWidth: 22,
+        height: 22,
+        paddingHorizontal: 6,
         justifyContent: 'center',
         alignItems: 'center',
     },
     unreadText: {
-        color: '#fff',
+        color: '#0B141B',
         fontSize: 12,
         fontWeight: 'bold',
     },

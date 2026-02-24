@@ -1,7 +1,8 @@
 import React from 'react';
-import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import ChatItem from './ChatItem';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Colors } from '../constants/Colors';
 
 const DATA = [
     {
@@ -77,9 +78,10 @@ const ChatList = ({ onChatPress }) => {
                 data={DATA}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => <ChatItem chat={item} onChatPress={onChatPress} />}
+                contentContainerStyle={styles.listContent}
             />
             <TouchableOpacity style={styles.fab}>
-                <MaterialIcons name="message" size={24} color="#fff" />
+                <MaterialIcons name="add-comment" size={24} color="#0B141B" />
             </TouchableOpacity>
         </View>
     );
@@ -88,23 +90,26 @@ const ChatList = ({ onChatPress }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.background,
+    },
+    listContent: {
+        paddingBottom: 100, // Space for FAB and BottomNav
     },
     fab: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 24,
         right: 20,
-        backgroundColor: '#25D366',
-        width: 60,
-        height: 60,
-        borderRadius: 30,
+        backgroundColor: Colors.unreadBadge,
+        width: 56,
+        height: 56,
+        borderRadius: 16, // Square-ish modern WhatsApp FAB
         justifyContent: 'center',
         alignItems: 'center',
-        elevation: 5,
+        elevation: 4,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
     },
 });
 

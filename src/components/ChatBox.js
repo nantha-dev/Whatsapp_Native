@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList, KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native';
+import { MaterialIcons, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Colors } from '../constants/Colors';
 
 const ChatBox = ({ chat, onBack }) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([
-        { id: '1', text: 'Hey there!', sender: 'other', time: '12:45 PM' },
-        { id: '2', text: 'How is it going?', sender: 'other', time: '12:46 PM' },
-        { id: '3', text: 'I am doing great, thanks for asking!', sender: 'me', time: '12:47 PM' },
+        { id: '1', text: 'Hey there! Have you seen the new redesign?', sender: 'other', time: '12:45 PM' },
+        { id: '2', text: 'It looks amazing! So modern and sleek.', sender: 'other', time: '12:46 PM' },
+        { id: '3', text: 'I am doing great, thanks for asking! Let\'s build the future.', sender: 'me', time: '12:47 PM' },
     ]);
 
     const sendMessage = () => {
@@ -30,179 +31,222 @@ const ChatBox = ({ chat, onBack }) => {
             item.sender === 'me' ? styles.myMessage : styles.otherMessage
         ]}>
             <Text style={styles.messageText}>{item.text}</Text>
-            <Text style={styles.messageTime}>{item.time}</Text>
+            <View style={styles.messageFooter}>
+                <Text style={styles.messageTime}>{item.time}</Text>
+                {item.sender === 'me' && (
+                    <MaterialCommunityIcons name="check-all" size={16} color={Colors.accent} style={{ marginLeft: 4 }} />
+                )}
+            </View>
         </View>
     );
 
     return (
-        <KeyboardAvoidingView
-            style={styles.container}
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            keyboardVerticalOffset={90}
-        >
-            {/* Custom Header */}
-            <View style={styles.header}>
-                <TouchableOpacity onPress={onBack} style={styles.backButton}>
-                    <MaterialIcons name="arrow-back" size={24} color="#fff" />
-                    <Image source={{ uri: chat.avatar }} style={styles.avatar} />
-                </TouchableOpacity>
-                <View style={styles.headerInfo}>
-                    <Text style={styles.name}>{chat.name}</Text>
-                    <Text style={styles.status}>online</Text>
+        <SafeAreaView style={styles.safeArea}>
+            <KeyboardAvoidingView
+                style={styles.container}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+            >
+                {/* Custom Header */}
+                <View style={styles.header}>
+                    <View style={styles.headerLeft}>
+                        <TouchableOpacity onPress={onBack} style={styles.backButton}>
+                            <MaterialIcons name="arrow-back" size={24} color={Colors.textPrimary} />
+                        </TouchableOpacity>
+                        <Image source={{ uri: chat.avatar }} style={styles.avatar} />
+                        <View style={styles.headerInfo}>
+                            <Text style={styles.name}>{chat.name}</Text>
+                            <Text style={styles.status}>online</Text>
+                        </View>
+                    </View>
+                    <View style={styles.iconGroup}>
+                        <TouchableOpacity style={styles.headerIcon}>
+                            <MaterialIcons name="videocam" size={24} color={Colors.textPrimary} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.headerIcon}>
+                            <MaterialIcons name="call" size={24} color={Colors.textPrimary} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.headerIcon}>
+                            <MaterialIcons name="more-vert" size={24} color={Colors.textPrimary} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={styles.iconGroup}>
-                    <MaterialIcons name="videocam" size={24} color="#fff" style={styles.icon} />
-                    <MaterialIcons name="call" size={24} color="#fff" style={styles.icon} />
-                    <MaterialIcons name="more-vert" size={24} color="#fff" style={styles.icon} />
-                </View>
-            </View>
 
-            {/* Chat Background/Messages */}
-            <Image
-                source={{ uri: 'https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png' }}
-                style={styles.background}
-            />
-
-            <FlatList
-                data={messages}
-                renderItem={renderMessage}
-                keyExtractor={(item) => item.id}
-                contentContainerStyle={styles.messageList}
-            />
-
-            {/* Input Area */}
-            <View style={styles.inputArea}>
-                <View style={styles.inputContainer}>
-                    <MaterialIcons name="insert-emoticon" size={24} color="#666" style={styles.inputIcon} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Type a message"
-                        value={message}
-                        onChangeText={setMessage}
-                        multiline
+                {/* Chat Background/Messages */}
+                <View style={styles.chatArea}>
+                    <Image
+                        source={{ uri: 'https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png' }}
+                        style={styles.background}
                     />
-                    <MaterialIcons name="attach-file" size={24} color="#666" style={styles.inputIcon} />
-                    <MaterialIcons name="photo-camera" size={24} color="#666" style={styles.inputIcon} />
+
+                    <FlatList
+                        data={messages}
+                        renderItem={renderMessage}
+                        keyExtractor={(item) => item.id}
+                        contentContainerStyle={styles.messageList}
+                    />
                 </View>
-                <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-                    <MaterialIcons name={message.trim() ? "send" : "mic"} size={24} color="#fff" />
-                </TouchableOpacity>
-            </View>
-        </KeyboardAvoidingView>
+
+                {/* Input Area */}
+                <View style={styles.inputArea}>
+                    <View style={styles.inputContainer}>
+                        <TouchableOpacity>
+                            <MaterialIcons name="add" size={24} color={Colors.textPrimary} style={styles.inputIcon} />
+                        </TouchableOpacity>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Message"
+                            placeholderTextColor={Colors.textSecondary}
+                            value={message}
+                            onChangeText={setMessage}
+                            multiline
+                        />
+                        <TouchableOpacity>
+                            <MaterialIcons name="insert-emoticon" size={24} color={Colors.textPrimary} style={styles.inputIcon} />
+                        </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+                        <MaterialIcons name={message.trim() ? "send" : "mic"} size={24} color="#0B141B" />
+                    </TouchableOpacity>
+                </View>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: Colors.surface,
+    },
     container: {
         flex: 1,
-        backgroundColor: '#E5DDD5',
+        backgroundColor: Colors.background,
     },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#075E54',
-        paddingTop: 45,
-        paddingBottom: 10,
-        paddingHorizontal: 10,
+        justifyContent: 'space-between',
+        backgroundColor: Colors.surface,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        borderBottomWidth: 0.5,
+        borderBottomColor: Colors.border,
     },
-    backButton: {
+    headerLeft: {
         flexDirection: 'row',
         alignItems: 'center',
+        flex: 1,
+    },
+    backButton: {
+        padding: 4,
     },
     avatar: {
-        width: 38,
-        height: 38,
-        borderRadius: 19,
-        marginLeft: 5,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        marginLeft: 4,
     },
     headerInfo: {
-        flex: 1,
-        marginLeft: 10,
+        marginLeft: 12,
     },
     name: {
-        color: '#fff',
-        fontSize: 18,
+        color: Colors.textPrimary,
+        fontSize: 16,
         fontWeight: 'bold',
     },
     status: {
-        color: '#fff',
+        color: Colors.unreadBadge,
         fontSize: 12,
-        opacity: 0.8,
     },
     iconGroup: {
         flexDirection: 'row',
+        alignItems: 'center',
     },
-    icon: {
-        marginLeft: 15,
+    headerIcon: {
+        marginLeft: 18,
+    },
+    chatArea: {
+        flex: 1,
+        position: 'relative',
     },
     background: {
         ...StyleSheet.absoluteFillObject,
-        opacity: 0.1,
+        opacity: 0.05,
         zIndex: -1,
+        backgroundColor: '#0B141B',
     },
     messageList: {
-        padding: 10,
-        paddingBottom: 20,
+        padding: 16,
+        paddingBottom: 24,
     },
     messageContainer: {
-        maxWidth: '80%',
-        padding: 10,
-        borderRadius: 10,
-        marginBottom: 10,
+        maxWidth: '85%',
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        borderRadius: 12,
+        marginBottom: 8,
         elevation: 1,
     },
     myMessage: {
         alignSelf: 'flex-end',
-        backgroundColor: '#DCF8C6',
-        borderTopRightRadius: 0,
+        backgroundColor: '#005C4B',
+        borderTopRightRadius: 2,
     },
     otherMessage: {
         alignSelf: 'flex-start',
-        backgroundColor: '#fff',
-        borderTopLeftRadius: 0,
+        backgroundColor: '#202C33',
+        borderTopLeftRadius: 2,
     },
     messageText: {
-        fontSize: 16,
-        color: '#303030',
+        fontSize: 15,
+        color: Colors.textPrimary,
+        lineHeight: 20,
+    },
+    messageFooter: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        marginTop: 2,
     },
     messageTime: {
         fontSize: 11,
-        color: '#666',
-        alignSelf: 'flex-end',
-        marginTop: 4,
+        color: 'rgba(233, 237, 239, 0.6)',
     },
     inputArea: {
         flexDirection: 'row',
         padding: 10,
-        alignItems: 'flex-end',
+        alignItems: 'center',
+        backgroundColor: Colors.surface,
     },
     inputContainer: {
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: '#fff',
-        borderRadius: 25,
-        paddingHorizontal: 10,
-        paddingVertical: 5,
+        backgroundColor: '#202C33',
+        borderRadius: 24,
+        marginHorizontal: 4,
+        paddingHorizontal: 12,
+        paddingVertical: 8,
         alignItems: 'center',
-        elevation: 2,
     },
     input: {
         flex: 1,
         fontSize: 16,
-        maxHeight: 100,
-        paddingHorizontal: 10,
+        color: Colors.textPrimary,
+        maxHeight: 120,
+        paddingHorizontal: 12,
     },
     inputIcon: {
-        marginHorizontal: 5,
+        opacity: 0.8,
     },
     sendButton: {
-        backgroundColor: '#075E54',
-        width: 50,
-        height: 50,
-        borderRadius: 25,
+        backgroundColor: Colors.unreadBadge,
+        width: 48,
+        height: 48,
+        borderRadius: 24,
         justifyContent: 'center',
         alignItems: 'center',
-        marginLeft: 5,
+        marginLeft: 4,
         elevation: 2,
     },
 });

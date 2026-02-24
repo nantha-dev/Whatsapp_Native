@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Colors } from '../constants/Colors';
 
 const STATUS_DATA = [
     {
@@ -45,7 +46,7 @@ const StatusList = () => {
                 <View style={styles.avatarContainer}>
                     <Image source={{ uri: 'https://i.pravatar.cc/150?u=me' }} style={styles.avatar} />
                     <View style={styles.addIconContainer}>
-                        <MaterialIcons name="add" size={16} color="#fff" />
+                        <MaterialIcons name="add" size={16} color={Colors.background} />
                     </View>
                 </View>
                 <View style={styles.textContainer}>
@@ -60,14 +61,15 @@ const StatusList = () => {
                 data={STATUS_DATA}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => <StatusItem item={item} />}
+                contentContainerStyle={{ paddingBottom: 100 }}
             />
 
             <View style={styles.fabContainer}>
                 <TouchableOpacity style={styles.miniFab}>
-                    <MaterialIcons name="edit" size={20} color="#075E54" />
+                    <MaterialIcons name="edit" size={20} color={Colors.textPrimary} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.fab}>
-                    <MaterialIcons name="photo-camera" size={24} color="#fff" />
+                    <MaterialIcons name="photo-camera" size={24} color={Colors.background} />
                 </TouchableOpacity>
             </View>
         </View>
@@ -77,11 +79,11 @@ const StatusList = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.background,
     },
     myStatusContainer: {
         flexDirection: 'row',
-        padding: 15,
+        padding: 16,
         alignItems: 'center',
     },
     avatarContainer: {
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
     },
     unreadBorder: {
         borderWidth: 2,
-        borderColor: '#25D366',
+        borderColor: Colors.unreadBadge,
     },
     avatar: {
         width: 52,
@@ -104,62 +106,63 @@ const styles = StyleSheet.create({
     addIconContainer: {
         position: 'absolute',
         bottom: 0,
-        right: 0,
-        backgroundColor: '#25D366',
-        borderRadius: 10,
-        width: 20,
-        height: 20,
+        right: 2,
+        backgroundColor: Colors.unreadBadge,
+        borderRadius: 12,
+        width: 22,
+        height: 22,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 2,
-        borderColor: '#fff',
+        borderColor: Colors.background,
     },
     textContainer: {
         flex: 1,
     },
     name: {
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: 'bold',
+        color: Colors.textPrimary,
     },
     time: {
         fontSize: 14,
-        color: '#666',
+        color: Colors.textSecondary,
         marginTop: 2,
     },
     sectionHeader: {
-        backgroundColor: '#f4f4f4',
-        paddingVertical: 8,
-        paddingHorizontal: 15,
-        color: '#666',
-        fontWeight: 'bold',
-        fontSize: 14,
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        color: Colors.textSecondary,
+        fontWeight: '600',
+        fontSize: 13,
+        textTransform: 'uppercase',
     },
     itemContainer: {
         flexDirection: 'row',
-        padding: 15,
+        padding: 16,
         alignItems: 'center',
     },
     fabContainer: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 24,
         right: 20,
         alignItems: 'center',
     },
     miniFab: {
-        backgroundColor: '#e9edef',
-        width: 45,
-        height: 45,
-        borderRadius: 22.5,
+        backgroundColor: '#202C33',
+        width: 44,
+        height: 44,
+        borderRadius: 12,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 15,
+        marginBottom: 16,
         elevation: 3,
     },
     fab: {
-        backgroundColor: '#25D366',
-        width: 60,
-        height: 60,
-        borderRadius: 30,
+        backgroundColor: Colors.unreadBadge,
+        width: 56,
+        height: 56,
+        borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
         elevation: 5,
